@@ -38,9 +38,9 @@ def initialize_services():
 
 services = initialize_services()
 
-def text_to_speech_component(text_to_read, button_label="🔊 Read Aloud"):
+def text_to_speech_component(text_to_read, button_label="🔊 Read Aloud", section_id="default"):
     """Add a text-to-speech button that reads the provided text"""
-    button_id = f"tts_button_{hash(text_to_read) % 10000}"
+    button_id = f"tts_button_{section_id}_{hash(text_to_read + section_id) % 10000}"
     
     # Clean text for speech (remove markdown and special characters)
     clean_text = text_to_read.replace("*", "").replace("#", "").replace("**", "").replace("₹", "rupees ")
@@ -229,7 +229,7 @@ def display_welcome_screen():
         st.markdown("### Welcome to AgriMarket AI")
     with col2:
         welcome_text = "Welcome to AgriMarket AI. Select your crop and location to get current price, tomorrow prediction, volume traded, and market trend."
-        text_to_speech_component(welcome_text, "🔊 Read Introduction")
+        text_to_speech_component(welcome_text, "🔊 Read Introduction", "welcome")
     
     col1, col2, col3 = st.columns(3)
     
@@ -310,7 +310,7 @@ def display_analysis_results(crop, location, market_data, weather_data, historic
             trend = market_data.get('trend', 'Stable')
             
             key_metrics_text = f"Current price: {current_price:.0f} rupees. Tomorrow prediction: {tomorrow_price:.0f} rupees. Volume traded: {volume:.0f} tonnes. Market trend: {trend}."
-            text_to_speech_component(key_metrics_text, "🔊 Read Key Metrics")
+            text_to_speech_component(key_metrics_text, "🔊 Read Key Metrics", "summary")
         with col3:
             stop_speech_component()
     
@@ -349,7 +349,7 @@ def display_analysis_results(crop, location, market_data, weather_data, historic
             trend = market_data.get('trend', 'Stable')
             
             metrics_text = f"Current price: {current_price:.0f} rupees. Tomorrow prediction: {tomorrow_price:.0f} rupees. Volume traded: {volume:.0f} tonnes. Market trend: {trend}."
-            text_to_speech_component(metrics_text, "🔊 Read Metrics")
+            text_to_speech_component(metrics_text, "🔊 Read Metrics", "ai_insights")
         
         display_ai_analysis(ai_analysis, ai_recommendations, price_factors)
     
@@ -367,7 +367,7 @@ def display_analysis_results(crop, location, market_data, weather_data, historic
             trend = market_data.get('trend', 'Stable')
             
             metrics_text = f"Current price: {current_price:.0f} rupees. Tomorrow prediction: {tomorrow_price:.0f} rupees. Volume traded: {volume:.0f} tonnes. Market trend: {trend}."
-            text_to_speech_component(metrics_text, "🔊 Read Metrics")
+            text_to_speech_component(metrics_text, "🔊 Read Metrics", "schemes")
         
         display_government_schemes(relevant_schemes)
     
@@ -428,7 +428,7 @@ def display_price_comparison_table(market_data, future_predictions):
         trend = market_data.get('trend', 'Stable')
         
         metrics_text = f"Current price: {current_price:.0f} rupees. Tomorrow prediction: {tomorrow_price:.0f} rupees. Volume traded: {volume:.0f} tonnes. Market trend: {trend}."
-        text_to_speech_component(metrics_text, "🔊 Read Metrics")
+        text_to_speech_component(metrics_text, "🔊 Read Metrics", "price_table")
     
     current_price = market_data.get('current_price', 0)
     yesterday_price = market_data.get('yesterday_price', current_price)
